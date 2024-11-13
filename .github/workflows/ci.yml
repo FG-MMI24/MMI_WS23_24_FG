@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Node.js CI/CD Pipeline
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  run_tests:
+  build_and_test:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,5 +22,32 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Run Linter
+        run: npm run lint
+
       - name: Run tests
         run: npm test
+
+      - name: Build project
+        run: npm run build
+
+  deploy:
+    needs: build_and_test  # Der deploy-Job läuft nur, wenn der build_and_test-Job erfolgreich ist
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'  # Deployment nur, wenn auf dem Haupt-Branch
+    
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+
+      - name: Notify Slack
+        if: success()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
