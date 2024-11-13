@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  install_dependencies:
+  build_and_test:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,48 +17,25 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '12'
+          node-version: '16'
 
       - name: Install dependencies
         run: npm install
 
-  build:
-    needs: install_dependencies  # Der Build-Job läuft nur, wenn install_dependencies erfolgreich ist
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '12'
-
-      - name: Build project
-        run: npm run build
-
-  test:
-    needs: install_dependencies  # Der Test-Job läuft nur, wenn install_dependencies erfolgreich ist
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '12'
+#      - name: Run Linter
+#        run: npm run lint
 
       - name: Run tests
         run: npm test
 
-  deploy:
-    needs: [build, test]  # Der deploy-Job läuft nur, wenn build und test erfolgreich sind
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'  # Deployment nur auf dem Haupt-Branch
+      - name: Build project
+        run: npm run build
 
+  deploy:
+    needs: build_and_test  # Der deploy-Job läuft nur, wenn der build_and_test-Job erfolgreich ist
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'  # Deployment nur, wenn auf dem Haupt-Branch
+    
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -68,3 +45,9 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
+
+#      - name: Notify Slack
+#        if: success()
+#        uses: rtCamp/action-slack-notify@v2
+#        env:
+#          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
