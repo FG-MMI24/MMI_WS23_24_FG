@@ -1,4 +1,3 @@
 run_tests:
-  image: paketobuildpacks/nodejs:latest
   script:
     - npm run test
