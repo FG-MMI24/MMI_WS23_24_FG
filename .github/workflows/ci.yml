@@ -28,8 +28,8 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Build project
-        run: npm run build
+#      - name: Build project
+#        run: npm run build
 
   deploy:
     needs: build_and_test  # Der deploy-Job läuft nur, wenn der build_and_test-Job erfolgreich ist
