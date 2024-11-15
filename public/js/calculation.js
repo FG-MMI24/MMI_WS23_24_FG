@@ -41,8 +41,8 @@ function updateDisplay() {
 }
 
 
-// this should be a very helpful comment
-getGreetingDependOnTime = function (myDate) {
+//Funktion gives "Guten Morgen" and "Guten Abend" out for specific time
+exports.getGreetingDependOnTime = function (myDate) {
     let timeBegin = '06:00';
     let timeEnd = '22:00';
     const dateBegin = new Date('2020-01-01 ' + timeBegin);
@@ -51,7 +51,6 @@ getGreetingDependOnTime = function (myDate) {
 
     if (dateBegin.getTime() < dateCurrent.getTime()) { //"guten morgen"
         if (dateCurrent.getTime() >= dateEnd.getTime()) {
-
             return "Guten Morgen"
         }
         else {
@@ -67,14 +66,15 @@ getGreetingDependOnTime = function (myDate) {
 
 
 function increaseTemperature() {
-    temperature--;
+    temperature++;
     updateDisplay();
 }
 
 function decreaseTemperature() {
-    temperature++;
+    temperature--;
     updateDisplay();
 }
+
 
 function levelChange() {
     switch (level) {
@@ -82,7 +82,7 @@ function levelChange() {
             level = 1;
             break;
         case 1:
-            level += 1;
+            level ++;
             break;
         case 2:
             level++;

@@ -1,12 +1,11 @@
 exports.celsiusToFahrenheit = function (celsius){
-if (true) {
     return ((celsius*(9/5))+32)
-}}
+}
 
 exports.fahrenheitToCelsius = function (fahrenheit){
- if (true) {
     return ((fahrenheit-32)/(9/5))
-}}
+}
+
 
 exports.getGreetingDependOnTime =  function (myDate) {
     let timeBegin = '06:00';
@@ -17,7 +16,6 @@ exports.getGreetingDependOnTime =  function (myDate) {
 
     if (dateBegin.getTime() <= dateCurrent.getTime()) {
         if (dateCurrent.getTime() >= dateEnd.getTime()) {
-
             return "Guten Abend"
         }
         else {

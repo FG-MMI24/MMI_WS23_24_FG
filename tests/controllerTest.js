@@ -1,6 +1,7 @@
 const expect = require('chai').expect;
 const apiTemperature = require('../public/js/auxiliaryAPI')
 const apiGreeting = require('../public/js/auxiliaryAPI')
+//const apiGreeting = require('../public/js/calculation')
 
 
 //TODO Unit Tests to implement
